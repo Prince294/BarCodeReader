@@ -9,8 +9,20 @@ export default function FormsDashboard({ route, navigation }) {
     const routeParams = route.params;
     const [cardsData, setCardsData] = useState([
         { 'name': 'Battery Swapping', id: 1, dropdown: false },
-        { 'name': 'Vehicle Log Book', id: 2, dropdown: true, dropCards: [{ 'name': 'Out', route: 'VehicleLogBookOutForm', routeName: 'Vehicle Out' }, { 'name': 'In', route: 'VehicleLogBookInForm', routeName: 'Vehicle In' }] },
-        { 'name': 'Maintenance', id: 3, dropdown: true, dropCards: [{ 'name': 'DI' }, { 'name': 'DWR', route: 'DWR', routeName: 'DWR' }, { 'name': 'BreakDown' }, { 'name': 'JobCard' }] },
+        {
+            'name': 'Vehicle Log Book', id: 2, dropdown: true, dropCards: [
+                { 'name': 'Out', route: 'VehicleLogBookOutForm', routeName: 'Vehicle Out' },
+                { 'name': 'In', route: 'VehicleLogBookInForm', routeName: 'Vehicle In' }
+            ]
+        },
+        {
+            'name': 'Maintenance', id: 3, dropdown: true, dropCards: [
+                { 'name': 'DI', route: 'DI', routeName: 'DI' },
+                { 'name': 'DWR', route: 'DWR', routeName: 'DWR' },
+                { 'name': 'BreakDown', route: 'BreakDown', routeName: 'BreakDown' },
+                { 'name': 'JobCard', route: 'JobCard', routeName: 'JobCard' }
+            ]
+        },
         { 'name': 'Security', id: 4, dropdown: false }
     ]);
 

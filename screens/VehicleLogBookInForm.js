@@ -5,7 +5,7 @@ export default function VehicleLogBookInForm({ route, navigation }) {
     const routeParams = route.params;
     useEffect(() => {
         navigation.setOptions({
-            title: routeParams?.name,
+            title: 'Vehicle Log Book In',
             headerTitleAlign: 'center'
         });
     }, []);

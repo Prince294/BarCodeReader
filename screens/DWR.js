@@ -1,11 +1,12 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
 
 export default function DWR({ route, navigation }) {
+    const textAreaLines = 4;
     const routeParams = route.params;
     useEffect(() => {
         navigation.setOptions({
-            title: routeParams?.name,
+            title: 'DWR',
             headerTitleAlign: 'center'
         });
     }, []);
@@ -24,37 +25,66 @@ export default function DWR({ route, navigation }) {
                     keyboardType="numeric"
                 />
 
-                <TextArea
+                <TextInput
+                    multiline={true}
+                    numberOfLines={textAreaLines}
                     placeholder="Snag Details"
                     placeholderTextColor={'gray'}
                     selectionColor={'#ec3237'}
                     underlineColorAndroid={'#000'}
-                    style={styles.input}
+                    style={styles.inputArea}
                 />
 
                 <TextInput
-                    placeholder="In time"
+                    multiline={true}
+                    numberOfLines={textAreaLines}
+                    placeholder="Rectification Details"
+                    placeholderTextColor={'gray'}
+                    selectionColor={'#ec3237'}
+                    underlineColorAndroid={'#000'}
+                    style={styles.inputArea}
+                />
+                <TextInput
+                    multiline={true}
+                    numberOfLines={textAreaLines}
+                    placeholder="Spares Used"
+                    placeholderTextColor={'gray'}
+                    selectionColor={'#ec3237'}
+                    underlineColorAndroid={'#000'}
+                    style={styles.inputArea}
+                />
+                <TextInput
+                    placeholder="Spares QTY"
+                    placeholderTextColor={'gray'}
+                    selectionColor={'#ec3237'}
+                    underlineColorAndroid={'#000'}
+                    style={styles.input}
+                    keyboardType="numeric"
+                />
+                <TextInput
+                    placeholder="Issue Slip No."
                     placeholderTextColor={'gray'}
                     selectionColor={'#ec3237'}
                     underlineColorAndroid={'#000'}
                     style={styles.input}
                 />
                 <TextInput
-                    placeholder="Driver Name"
+                    placeholder="Rate"
+                    placeholderTextColor={'gray'}
+                    selectionColor={'#ec3237'}
+                    underlineColorAndroid={'#000'}
+                    style={styles.input}
+                    keyboardType="numeric"
+                />
+                <TextInput
+                    placeholder="Job Done By"
                     placeholderTextColor={'gray'}
                     selectionColor={'#ec3237'}
                     underlineColorAndroid={'#000'}
                     style={styles.input}
                 />
                 <TextInput
-                    placeholder="Battery End Percentage"
-                    placeholderTextColor={'gray'}
-                    selectionColor={'#ec3237'}
-                    underlineColorAndroid={'#000'}
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="Battery Number"
+                    placeholder="Sup By"
                     placeholderTextColor={'gray'}
                     selectionColor={'#ec3237'}
                     underlineColorAndroid={'#000'}
@@ -77,5 +107,11 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
         fontSize: 16,
     },
+    inputArea: {
+        paddingLeft: 6,
+        paddingBottom: 8,
+        fontSize: 16,
+        verticalAlign: 'top'
+    }
 })
 
