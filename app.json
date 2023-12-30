@@ -1,6 +1,27 @@
 {
   "expo": {
-    "name": "barcodereader",
-    "slug": "barcodereader"
+    "name": "Bar Code Reader",
+    "slug": "barcodereader",
+    "orientation": "portrait",
+    "android": {
+      "package": "com.reflex1408.barcodereader",
+      "runtimeVersion": "1.0.0"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bde06184-74b6-43fa-a4b0-5499fdad0cf1"
+      }
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "url": "https://u.expo.dev/bde06184-74b6-43fa-a4b0-5499fdad0cf1"
+    },
+    "runtimeVersion": "1.0.0",
+    "ios": {}
   }
 }
