@@ -23,7 +23,7 @@ function App() {
     <NavigationContainer>
 
       <StatusBar style="dark" />
-      <Stack.Navigator initialRouteName='FormsDashboard' screenOptions={{
+      <Stack.Navigator initialRouteName='Login' screenOptions={{
         headerShown: true, headerStyle: {
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10

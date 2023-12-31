@@ -1,11 +1,19 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { AntDesign } from "@expo/vector-icons";
+import DatePicker from 'react-native-modern-datepicker';
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 
 export default function JobCard({ route, navigation }) {
     const textAreaLines = 4;
     const routeParams = route.params;
+
+    const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
+    const [calanderOpen, setCalanderOpen] = useState(false);
+    const [selectedDate, setSelectedDate] = useState();
+    const [calanderIndex, setCalanderIndex] = useState(-1)
+
+
     const [formData, setFormData] = useState({
         chassisNo: '',
         mileage: '',
@@ -28,15 +36,15 @@ export default function JobCard({ route, navigation }) {
     ])
 
     const [table, setTable] = useState([
-        { name: 'Front' },
-        { name: 'Rear L/H' },
-        { name: 'Mat' },
-        { name: 'Mud Flap' },
-        { name: 'Wiper' },
-        { name: 'Battery No./Make' },
-        { name: 'Fire Ext.' },
-        { name: 'In' },
-        { name: 'Out' },
+        { name: 'Front', type: '', value: '' },
+        { name: 'Rear L/H', type: '', value: '' },
+        { name: 'Mat', type: '', value: '' },
+        { name: 'Mud Flap', type: '', value: '' },
+        { name: 'Wiper', type: '', value: '' },
+        { name: 'Battery No./Make', type: '', value: '' },
+        { name: 'Fire Ext.', type: '', value: '' },
+        { name: 'In', type: 'date', value: '' },
+        { name: 'Out', type: 'date', value: '' },
     ])
 
     useEffect(() => {
@@ -63,6 +71,20 @@ export default function JobCard({ route, navigation }) {
         let data = [...singleCheck];
         data[index]['val'] = !data[index]?.val;
         setSingleCheck(data);
+    }
+
+    const handleCalanderClick = (index) => {
+        setCalanderIndex(index);
+        setSelectedDate(table[index]?.value);
+        setCalanderOpen(prev => !prev);
+    }
+
+    const handleCalanderSelection = (date) => {
+        setSelectedDate(date);
+        let data = table;
+        data[calanderIndex]['value'] = date;
+        setTable(data);
+        setCalanderOpen(prev => !prev);
     }
 
     return (
@@ -125,7 +147,7 @@ export default function JobCard({ route, navigation }) {
                 <View className="border p-2">
                     {table?.map((tr, index) => {
                         return (
-                            <TableTr key={index} name={tr?.name} />
+                            <TableTr key={index} name={tr?.name} type={tr?.type} handleCalanderClick={() => handleCalanderClick(index)} value={tr?.value} />
                         )
                     })}
                 </View>
@@ -134,6 +156,27 @@ export default function JobCard({ route, navigation }) {
                 <TouchableOpacity className="w-full bg-[#ec3237] p-2 rounded-xl mt-10 mb-8">
                     <Text className="text-xl font-bold text-white text-center">Submit</Text>
                 </TouchableOpacity>
+
+
+                <Modal transparent={true} visible={calanderOpen}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <AntDesign name="closecircle" size={24} color="black" onPress={() => {
+                                setCalanderOpen(false)
+                            }} style={{ marginLeft: 'auto', marginBottom: 10 }} />
+                            <DatePicker
+                                current={currentDate}
+                                selected={selectedDate}
+                                onDateChange={(date) => {
+                                    handleCalanderSelection(date)
+                                }}
+                                mode="calendar"
+                                style={{ borderRadius: 10 }}
+                            />
+                        </View>
+                    </View>
+                </Modal>
+
             </View>
         </ScrollView>
     )
@@ -154,11 +197,27 @@ const CheckBoxButton = ({ name, checked, handleCheckBox }) => {
         </TouchableOpacity>)
 }
 
-const TableTr = ({ name }) => {
+const TableTr = ({ name, type, handleCalanderClick, value }) => {
     return (
         <View style={styles.tableTr}>
             <View className="border-y border-l" style={styles.tableTrText}><Text style={{ fontSize: 17, fontWeight: 500 }}>{name}</Text></View>
-            <TextInput className="border" selectionColor={'#ec3237'} style={[styles.tableTrText1]} />
+
+
+            {type === 'date' ?
+                <View style={styles.calanderView}>
+                    <TextInput
+                        selectionColor={'#ec3237'}
+                        style={[styles.tableTrText1, { color: 'black' }]}
+                        value={value}
+                        editable={false}
+                        className="border"
+                    />
+                    <TouchableOpacity style={styles.calanderIcon} onPress={handleCalanderClick}>
+                        <MaterialIcons name="date-range" size={25} />
+                    </TouchableOpacity>
+                </View>
+                :
+                <TextInput className="border" selectionColor={'#ec3237'} style={[styles.tableTrText1]} />}
         </View>
     )
 }
@@ -229,5 +288,30 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: 7,
         fontSize: 16
-    }
+    },
+    calanderView: {
+        flexDirection: 'row',
+        flex: 1
+    },
+    calanderIcon: {
+        position: 'absolute',
+        right: 12,
+        top: 3,
+        zIndex: 10000
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22
+    },
+
+    modalView: {
+        margin: 10,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        width: "90%",
+        padding: 14,
+        alignItems: 'center',
+    },
 })

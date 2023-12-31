@@ -32,6 +32,10 @@ export default function BreakDown({ route, navigation }) {
         });
     }, []);
 
+    useEffect(() => {
+        console.log(calanderOpen)
+    }, [calanderOpen])
+
 
     return (
         <ScrollView className="h-full w-full flex pt-10 pb-10">
@@ -99,9 +103,7 @@ export default function BreakDown({ route, navigation }) {
                             editable={false}
 
                         />
-                        <TouchableOpacity style={styles.calanderIcon} onPress={() => {
-                            setCalanderOpen(true)
-                        }}>
+                        <TouchableOpacity style={styles.calanderIcon} onPress={() => setCalanderOpen(true)}>
                             <MaterialIcons name="date-range" size={30} />
                         </TouchableOpacity>
                     </View>
@@ -115,7 +117,7 @@ export default function BreakDown({ route, navigation }) {
                 </TouchableOpacity>
             </View>
 
-            <Modal animationType='slide' transparent={true} visible={calanderOpen}>
+            <Modal transparent={true} visible={calanderOpen}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <AntDesign name="closecircle" size={24} color="black" onPress={() => {
@@ -124,12 +126,11 @@ export default function BreakDown({ route, navigation }) {
                         <DatePicker
                             current={currentDate}
                             selected={selectedDate}
-                            onSelectedChange={date => {
+                            onDateChange={(date) => {
+                                setCalanderOpen(false);
                                 setSelectedDate(date);
-                                setCalanderOpen(false)
                             }}
                             mode="calendar"
-                            minuteInterval={30}
                             style={{ borderRadius: 10 }}
                         />
                     </View>

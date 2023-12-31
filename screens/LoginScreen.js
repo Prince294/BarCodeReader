@@ -4,14 +4,20 @@ import { StatusBar } from 'expo-status-bar'
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { StackActions } from '@react-navigation/native';
 import backgroundImage from '../assets/login/background.png'
-import axios from 'axios';
 import { apisPath } from '../utils/path';
+import Loader from './Loader';
 
 export default function LoginScreen({ navigation }) {
     // const navigation = useNavigation();
+    const [loading, setLoading] = useState(false)
     const [formBody, setFormBody] = useState({ username: '', password: '' });
 
     const loginHandler = async () => {
+        if (formBody?.username === '' || formBody?.password === '') {
+            Alert.alert(`Input fields must not be blank`);
+            return;
+        }
+        setLoading(true)
         const form_data = new FormData();
         form_data.append('username', formBody?.username);
         form_data.append('password', formBody?.password);
@@ -22,6 +28,8 @@ export default function LoginScreen({ navigation }) {
         }).then(response => response.json())
             .then(res => {
                 // console.log(res);
+                setLoading(false)
+
                 if (res?.success) {
                     Alert.alert('Success', 'Successfully Logged In', [
                         {
@@ -30,15 +38,15 @@ export default function LoginScreen({ navigation }) {
                             )
                         },
                     ]);
-
-
                 }
                 else {
+                    setLoading(false)
                     Alert.alert(`Error: ${res?.message}`)
                 }
             })
             .catch(error => {
                 // console.error(error);
+                setLoading(false)
                 Alert.alert(`Error ${err}`)
             });
     }
@@ -49,6 +57,7 @@ export default function LoginScreen({ navigation }) {
 
     return (
         <View className="bg-white h-full w-full">
+            {loading && <Loader />}
             <StatusBar style="light" />
             <Image className="h-full w-full absolute" source={backgroundImage} />
 
@@ -92,7 +101,7 @@ export default function LoginScreen({ navigation }) {
                         />
                     </Animated.View>
                     <Animated.View
-                        entering={FadeInDown.delay(200).duration(1000).springify()}
+                        entering={FadeInDown.delay(300).duration(1000).springify()}
                         className="bg-black/5 p-5 rounded-2xl w-full mb-3">
 
                         <TextInput

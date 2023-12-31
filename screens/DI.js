@@ -15,9 +15,13 @@ export default function DI({ route, navigation }) {
         allLight: false,
         allLightRemark: '',
         parkingBrake: false,
+        parkingBrakeRemark: '',
         tranaxleOil: false,
+        tranaxleOilRemark: '',
         tyrePressure: false,
+        tyrePressureRemark: '',
         physicalInspection: false,
+        physicalInspectionRemark: '',
         odoMeterReading: '',
         allFastners: '',
         remark: '',
@@ -132,6 +136,15 @@ export default function DI({ route, navigation }) {
                     <View style={styles.radioButtonsContainer}>
                         <RadioButton name={"Ok"} checked={formData?.parkingBrake} handleRadioButton={() => handleRadioButton('parkingBrake')} />
                         <RadioButton name={"Not Ok"} checked={!formData?.parkingBrake} handleRadioButton={() => handleRadioButton('parkingBrake')} />
+                        <TextInput
+                            placeholder="Type here..."
+                            placeholderTextColor={'gray'}
+                            selectionColor={'#ec3237'}
+                            underlineColorAndroid={'#000'}
+                            style={styles.input1}
+                            value={formData?.parkingBrakeRemark}
+                            onChangeText={e => handleInputChange('parkingBrakeRemark', e)}
+                        />
                     </View>
                 </View>
 
@@ -140,6 +153,15 @@ export default function DI({ route, navigation }) {
                     <View style={styles.radioButtonsContainer}>
                         <RadioButton name={"Ok"} checked={formData?.tranaxleOil} handleRadioButton={() => handleRadioButton('tranaxleOil')} />
                         <RadioButton name={"Not Ok"} checked={!formData?.tranaxleOil} handleRadioButton={() => handleRadioButton('tranaxleOil')} />
+                        <TextInput
+                            placeholder="Type here..."
+                            placeholderTextColor={'gray'}
+                            selectionColor={'#ec3237'}
+                            underlineColorAndroid={'#000'}
+                            style={styles.input1}
+                            value={formData?.tranaxleOilRemark}
+                            onChangeText={e => handleInputChange('tranaxleOilRemark', e)}
+                        />
                     </View>
                 </View>
 
@@ -148,6 +170,15 @@ export default function DI({ route, navigation }) {
                     <View style={styles.radioButtonsContainer}>
                         <RadioButton name={"Ok"} checked={formData?.tyrePressure} handleRadioButton={() => handleRadioButton('tyrePressure')} />
                         <RadioButton name={"Not Ok"} checked={!formData?.tyrePressure} handleRadioButton={() => handleRadioButton('tyrePressure')} />
+                        <TextInput
+                            placeholder="Type here..."
+                            placeholderTextColor={'gray'}
+                            selectionColor={'#ec3237'}
+                            underlineColorAndroid={'#000'}
+                            style={styles.input1}
+                            value={formData?.tyrePressureRemark}
+                            onChangeText={e => handleInputChange('tyrePressureRemark', e)}
+                        />
                     </View>
                 </View>
 
@@ -156,6 +187,15 @@ export default function DI({ route, navigation }) {
                     <View style={styles.radioButtonsContainer}>
                         <RadioButton name={"Ok"} checked={formData?.physicalInspection} handleRadioButton={() => handleRadioButton('physicalInspection')} />
                         <RadioButton name={"Not Ok"} checked={!formData?.physicalInspection} handleRadioButton={() => handleRadioButton('physicalInspection')} />
+                        <TextInput
+                            placeholder="Type here..."
+                            placeholderTextColor={'gray'}
+                            selectionColor={'#ec3237'}
+                            underlineColorAndroid={'#000'}
+                            style={styles.input1}
+                            value={formData?.physicalInspectionRemark}
+                            onChangeText={e => handleInputChange('physicalInspectionRemark', e)}
+                        />
                     </View>
                 </View>
 
