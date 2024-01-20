@@ -6,9 +6,14 @@ import { StackActions } from '@react-navigation/native';
 import backgroundImage from '../assets/login/background.png'
 import { apisPath } from '../utils/path';
 import Loader from './Loader';
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../redux/action';
+
 
 export default function LoginScreen({ navigation }) {
     // const navigation = useNavigation();
+    const dispatch = useDispatch();
+
     const [loading, setLoading] = useState(false)
     const [formBody, setFormBody] = useState({ username: '', password: '' });
 
@@ -30,7 +35,9 @@ export default function LoginScreen({ navigation }) {
                 // console.log(res);
                 setLoading(false)
 
+
                 if (res?.success) {
+                    dispatch(userLogin(res?.token));
                     Alert.alert('Success', 'Successfully Logged In', [
                         {
                             text: 'OK', onPress: () => navigation.dispatch(
