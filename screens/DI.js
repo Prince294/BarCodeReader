@@ -1,9 +1,16 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Loader from './Loader';
+import { apisPath } from '../utils/path';
+import { post } from '../utils/ApiRequest';
 
 export default function DI({ route, navigation }) {
     const textAreaLines = 4;
-    const routeParams = route.params;
+    const [loading, setLoading] = useState(false)
+    const chassis_no = useSelector(state => state?.vehicleDetailReducer?.chassis_no);
+    const km_reading = useSelector(state => state?.vehicleDetailReducer?.km_reading);
+    const token = useSelector(state => state?.loginReducer?.token);
 
     const [formData, setFormData] = useState({
         brakeFluid: false,
@@ -46,8 +53,46 @@ export default function DI({ route, navigation }) {
         });
     }
 
+    const submitForm = async () => {
+        setLoading(true);
+        let form = {
+            km_reading: km_reading,
+            break_fluid_level: formData?.brakeFluid,
+            break_fluid_remark: formData?.brakeFluidRemark,
+            hyd_oil_level: formData?.oilLevel,
+            hyd_oil_remark: formData?.oilLevelRemark,
+            steering_function: formData?.steeringFunction,
+            steering_function_remark: formData?.steeringFunctionRemark,
+            all_lights: formData?.allLight,
+            all_lights_remark: formData?.allLightRemark,
+            parking_brake: formData?.parkingBrake,
+            parking_brake_remark: formData?.parkingBrakeRemark,
+            tranaxle_oil_level: formData?.tranaxleOil,
+            tranaxle_oil_remark: formData?.tranaxleOilRemark,
+            tyre_pressure: formData?.tyrePressure,
+            tyre_pressure_remark: formData?.tyrePressureRemark,
+            physical_inspection: formData?.physicalInspection,
+            physical_inspection_remark: formData?.physicalInspectionRemark,
+            all_fastners: formData?.allFastners,
+            remark: formData?.remark,
+            vehicle_id: chassis_no
+        }
+
+        await post(apisPath?.front?.di, token, form).then((res) => {
+            if (res?.success) {
+                setLoading(false);
+                navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams.username })
+            }
+            else {
+                setLoading(false);
+                Alert.alert(`Error: ${res?.message}`)
+            }
+        })
+    }
+
     return (
         <ScrollView className="h-full w-full flex pt-10 pb-10">
+            {loading && <Loader />}
             <View className="mx-6 space-y-5 pb-12">
 
                 <TextInput
@@ -224,7 +269,7 @@ export default function DI({ route, navigation }) {
                     onChangeText={e => handleInputChange('remark', e)}
                 />
 
-                <TouchableOpacity className="w-full bg-[#ec3237] p-2 rounded-xl mt-8 mb-8">
+                <TouchableOpacity className="w-full bg-[#ec3237] p-2 rounded-xl mt-8 mb-8" onPress={submitForm}>
                     <Text className="text-xl font-bold text-white text-center">Submit</Text>
                 </TouchableOpacity>
             </View>

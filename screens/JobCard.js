@@ -1,13 +1,19 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Modal } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Modal, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-native-modern-datepicker';
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { useSelector } from 'react-redux';
+import { apisPath } from '../utils/path';
+import { post } from '../utils/ApiRequest';
+import Loader from './Loader';
 
 
 export default function JobCard({ route, navigation }) {
     const textAreaLines = 4;
-    const routeParams = route.params;
-
+    const chassis_no = useSelector(state => state?.vehicleDetailReducer?.chassis_no);
+    const km_reading = useSelector(state => state?.vehicleDetailReducer?.km_reading);
+    const token = useSelector(state => state?.loginReducer?.token);
+    const [loading, setLoading] = useState(false)
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
     const [calanderOpen, setCalanderOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState();
@@ -15,7 +21,7 @@ export default function JobCard({ route, navigation }) {
 
 
     const [formData, setFormData] = useState({
-        chassisNo: '',
+        chassisNo: chassis_no,
         mileage: '',
         toolkit: false,
         serviceBook: false,
@@ -87,8 +93,53 @@ export default function JobCard({ route, navigation }) {
         setCalanderOpen(prev => !prev);
     }
 
+    const submitForm = async () => {
+        setLoading(true)
+        let form = {
+            km_reading: km_reading,
+            toolkit: formData?.toolkit,
+            service_book: formData?.serviceBook,
+            owner_book: formData?.ownerBook,
+            mirror_rh: rhlh[0]?.rh,
+            mirror_lh: rhlh[0]?.lh,
+            hl_bulb_rh: rhlh[1]?.rh,
+            hl_bulb_lh: rhlh[1]?.lh,
+            il_bulb_rh: rhlh[2]?.rh,
+            il_bulb_lh: rhlh[2]?.lh,
+            tl_bulb_rh: rhlh[3]?.rh,
+            tl_bulb_lh: rhlh[3]?.lh,
+            rl_bulb_rh: rhlh[4]?.rh,
+            rl_bulb_lh: rhlh[4]?.lh,
+            front: table[0]?.value,
+            rear_lh: table[1]?.value,
+            rear_rh: table[1]?.value,
+            mat: table[2]?.value,
+            mud_flap: table[3]?.value,
+            wiper: table[4]?.value,
+            battery_no: table[5]?.value,
+            fire_ext: table[6]?.value,
+            in_time: table[7]?.value,
+            out_time: table[8]?.value,
+            vehicle_id: chassis_no,
+            token: token,
+        }
+
+        await post(apisPath?.front?.jobCard, token, form).then((res) => {
+            console.log(res)
+            if (res?.success) {
+                setLoading(false)
+                // navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams.username })
+            }
+            else {
+                setLoading(false)
+                Alert.alert(`Error: ${res?.message}`)
+            }
+        })
+    }
+
     return (
         <ScrollView className="h-full w-full flex p-3">
+            {loading && <Loader />}
             <View className="space-y-2 pb-4">
 
                 <View className="border p-2">
@@ -153,7 +204,7 @@ export default function JobCard({ route, navigation }) {
                 </View>
 
 
-                <TouchableOpacity className="w-full bg-[#ec3237] p-2 rounded-xl mt-10 mb-8">
+                <TouchableOpacity className="w-full bg-[#ec3237] p-2 rounded-xl mt-10 mb-8" onPress={submitForm}>
                     <Text className="text-xl font-bold text-white text-center">Submit</Text>
                 </TouchableOpacity>
 

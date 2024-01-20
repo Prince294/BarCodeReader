@@ -1,14 +1,22 @@
-import { View, Text, TouchableOpacity, ImageBackground } from 'react-native'
+import { View, Text, TouchableOpacity, ImageBackground, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import QRCode from '../assets/QRCode/qr_code.gif';
+import { useDispatch } from 'react-redux';
+import { vehilceDetail } from '../redux/action';
+import { apisPath } from '../utils/path';
+import Loader from './Loader';
+import { post } from '../utils/ApiRequest';
 
 export default function BarCodeScreen({ route, navigation }) {
+    const dispatch = useDispatch();
+
     var navigationSubscription;
     const routeParams = route.params;
+    const [loading, setLoading] = useState(false)
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [cameraClicked, setCameraClicked] = useState(false)
@@ -35,9 +43,27 @@ export default function BarCodeScreen({ route, navigation }) {
     }
 
     // What happens when we scan the bar code
-    const handleBarCodeScanned = ({ type, data }) => {
-        navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams.username })
+    const handleBarCodeScanned = async ({ type, data }) => {
+        setLoading(true);
         setScanned(true);
+        setCameraClicked(false);
+
+        const form_data = new FormData();
+        form_data.append('chassis_no', data);
+
+        await post(apisPath?.front?.barCodeScan, token, form_data).then((res) => {
+            console.log(res)
+            if (res?.success) {
+                dispatch(vehilceDetail({ km_reading: res?.data?.km_reading, chassis_no: data }));
+                navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams?.username })
+                setScanned(true);
+            }
+            else {
+                setScanned(false);
+                setLoading(false);
+                Alert.alert(`Error: ${res?.message}`)
+            }
+        })
     };
 
     // Check permissions and return the screens
@@ -58,6 +84,7 @@ export default function BarCodeScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
+            {loading && <Loader />}
             {cameraClicked &&
                 <>
                     <View style={styles.barcodebox} >
@@ -72,7 +99,8 @@ export default function BarCodeScreen({ route, navigation }) {
             {!cameraClicked &&
                 <View style={styles.barcodebox}>
                     <ImageBackground style={[styles.barcodebox, styles.imageBackground]} source={QRCode} >
-                    </ImageBackground></View>
+                    </ImageBackground>
+                </View>
             }
 
             {!cameraClicked &&

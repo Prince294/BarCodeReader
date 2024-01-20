@@ -13,6 +13,9 @@ import DWR from './screens/DWR';
 import DI from './screens/DI';
 import JobCard from './screens/JobCard';
 import BreakDown from './screens/BreakDown';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+
 
 
 
@@ -20,30 +23,33 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
 
-      <StatusBar style="dark" />
-      <Stack.Navigator initialRouteName='Login' screenOptions={{
-        headerShown: true, headerStyle: {
-          borderBottomLeftRadius: 10,
-          borderBottomRightRadius: 10
-        }
-      }}>
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Scanner" component={BarCodeScreen} />
-        <Stack.Screen name="FormsDashboard" component={FormsDashboard} />
+        <StatusBar style="dark" />
+        <Stack.Navigator initialRouteName='Login' screenOptions={{
+          headerShown: true, headerStyle: {
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10
+          }
+        }}>
+          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Scanner" component={BarCodeScreen} />
+          <Stack.Screen name="FormsDashboard" component={FormsDashboard} />
 
-        <Stack.Screen name="VehicleLogBookOutForm" component={VehicleLogBookOutForm} />
-        <Stack.Screen name="VehicleLogBookInForm" component={VehicleLogBookInForm} />
+          <Stack.Screen name="VehicleLogBookOutForm" component={VehicleLogBookOutForm} />
+          <Stack.Screen name="VehicleLogBookInForm" component={VehicleLogBookInForm} />
 
-        <Stack.Screen name="DWR" component={DWR} />
-        <Stack.Screen name="DI" component={DI} />
-        <Stack.Screen name="JobCard" component={JobCard} />
-        <Stack.Screen name="BreakDown" component={BreakDown} />
+          <Stack.Screen name="DWR" component={DWR} />
+          <Stack.Screen name="DI" component={DI} />
+          <Stack.Screen name="JobCard" component={JobCard} />
+          <Stack.Screen name="BreakDown" component={BreakDown} />
 
-      </Stack.Navigator>
+        </Stack.Navigator>
 
-    </NavigationContainer>
+      </NavigationContainer>
+    </Provider>
+
   );
 }
 
