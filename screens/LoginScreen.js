@@ -34,8 +34,6 @@ export default function LoginScreen({ navigation }) {
             .then(res => {
                 // console.log(res);
                 setLoading(false)
-
-
                 if (res?.success) {
                     dispatch(userLogin(res?.token));
                     Alert.alert('Success', 'Successfully Logged In', [

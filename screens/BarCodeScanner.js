@@ -5,7 +5,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import QRCode from '../assets/QRCode/qr_code.gif';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { vehilceDetail } from '../redux/action';
 import { apisPath } from '../utils/path';
 import Loader from './Loader';
@@ -13,6 +13,8 @@ import { post } from '../utils/ApiRequest';
 
 export default function BarCodeScreen({ route, navigation }) {
     const dispatch = useDispatch();
+    const token = useSelector(state => state?.LoginReducer?.token);
+
 
     var navigationSubscription;
     const routeParams = route.params;
@@ -47,11 +49,12 @@ export default function BarCodeScreen({ route, navigation }) {
         setLoading(true);
         setScanned(true);
         setCameraClicked(false);
+        console.log(data)
 
         const form_data = new FormData();
         form_data.append('chassis_no', data);
 
-        await post(apisPath?.front?.barCodeScan, token, form_data).then((res) => {
+        await post(apisPath?.front?.barCodeScan, form_data).then((res) => {
             console.log(res)
             if (res?.success) {
                 dispatch(vehilceDetail({ km_reading: res?.data?.km_reading, chassis_no: data }));

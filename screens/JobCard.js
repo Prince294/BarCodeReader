@@ -10,9 +10,9 @@ import Loader from './Loader';
 
 export default function JobCard({ route, navigation }) {
     const textAreaLines = 4;
-    const chassis_no = useSelector(state => state?.vehicleDetailReducer?.chassis_no);
-    const km_reading = useSelector(state => state?.vehicleDetailReducer?.km_reading);
-    const token = useSelector(state => state?.loginReducer?.token);
+    const chassis_no = useSelector(state => state?.VehicleDetailReducer?.chassis_no);
+    const km_reading = useSelector(state => state?.VehicleDetailReducer?.km_reading);
+    const token = useSelector(state => state?.LoginReducer?.token);
     const [loading, setLoading] = useState(false)
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
     const [calanderOpen, setCalanderOpen] = useState(false);
@@ -124,17 +124,28 @@ export default function JobCard({ route, navigation }) {
             token: token,
         }
 
-        await post(apisPath?.front?.jobCard, token, form).then((res) => {
-            console.log(res)
+        var form_data = new FormData();
+        for (var key in form) {
+            form_data.append(key, form[key]);
+        }
+
+        await post(apisPath?.front?.jobCard, form_data).then((res) => {
+            // console.log(res)
             if (res?.success) {
                 setLoading(false)
-                // navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams.username })
+                navigation.navigate('FormsDashboard')
             }
             else {
                 setLoading(false)
                 Alert.alert(`Error: ${res?.message}`)
             }
         })
+    }
+
+    const handleTableInput = (val, index) => {
+        let data = [...table];
+        data[index]['value'] = val;
+        setTable(data)
     }
 
     return (
@@ -198,7 +209,7 @@ export default function JobCard({ route, navigation }) {
                 <View className="border p-2">
                     {table?.map((tr, index) => {
                         return (
-                            <TableTr key={index} name={tr?.name} type={tr?.type} handleCalanderClick={() => handleCalanderClick(index)} value={tr?.value} />
+                            <TableTr key={index} name={tr?.name} type={tr?.type} handleCalanderClick={() => handleCalanderClick(index)} value={tr?.value} handleTableInput={handleTableInput} index={index} />
                         )
                     })}
                 </View>
@@ -248,7 +259,7 @@ const CheckBoxButton = ({ name, checked, handleCheckBox }) => {
         </TouchableOpacity>)
 }
 
-const TableTr = ({ name, type, handleCalanderClick, value }) => {
+const TableTr = ({ name, type, handleCalanderClick, value, handleTableInput, index }) => {
     return (
         <View style={styles.tableTr}>
             <View className="border-y border-l" style={styles.tableTrText}><Text style={{ fontSize: 17, fontWeight: 500 }}>{name}</Text></View>
@@ -268,7 +279,7 @@ const TableTr = ({ name, type, handleCalanderClick, value }) => {
                     </TouchableOpacity>
                 </View>
                 :
-                <TextInput className="border" selectionColor={'#ec3237'} style={[styles.tableTrText1]} />}
+                <TextInput className="border" selectionColor={'#ec3237'} style={[styles.tableTrText1]} onChangeText={(e) => handleTableInput(e, index)} />}
         </View>
     )
 }

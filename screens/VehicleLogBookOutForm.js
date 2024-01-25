@@ -7,16 +7,16 @@ import { useSelector } from 'react-redux';
 
 export default function VehicleLogBookOutForm({ route, navigation }) {
     const [loading, setLoading] = useState(false)
-    const chassis_no = useSelector(state => state?.vehicleDetailReducer?.chassis_no);
-    const km_reading = useSelector(state => state?.vehicleDetailReducer?.km_reading);
-    const token = useSelector(state => state?.loginReducer?.token);
+    const chassis_no = useSelector(state => state?.VehicleDetailReducer?.chassis_no);
+    const km_reading = useSelector(state => state?.VehicleDetailReducer?.km_reading);
+    const token = useSelector(state => state?.LoginReducer?.token);
 
     const [formData, setFormData] = useState({
         start_km: '',
         place_from: '',
         out_time: '',
         driver_name: '',
-        battery_start_per: '',
+        batter_start_per: '',
         battery_no: '',
         vehicle_id: chassis_no,
         token: token,
@@ -37,11 +37,15 @@ export default function VehicleLogBookOutForm({ route, navigation }) {
 
     const submitForm = async () => {
         setLoading(true)
-        await post(apisPath?.front?.vehicleLogOut, token, formData).then((res) => {
-            console.log(res)
+        var form_data = new FormData();
+        for (var key in formData) {
+            form_data.append(key, formData[key]);
+        }
+        await post(apisPath?.front?.vehicleLogOut, form_data).then((res) => {
+            // console.log(res)
             if (res?.success) {
                 setLoading(false)
-                // navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams.username })
+                navigation.navigate('FormsDashboard')
             }
             else {
                 setLoading(false)
@@ -61,6 +65,7 @@ export default function VehicleLogBookOutForm({ route, navigation }) {
                     selectionColor={'#ec3237'}
                     underlineColorAndroid={'#000'}
                     style={styles.input}
+                    keyboardType="numeric"
                     value={formData?.start_km}
                     onChangeText={e => handleInputChange('start_km', e)}
                 />
@@ -98,9 +103,10 @@ export default function VehicleLogBookOutForm({ route, navigation }) {
                     placeholderTextColor={'gray'}
                     selectionColor={'#ec3237'}
                     underlineColorAndroid={'#000'}
+                    keyboardType="numeric"
                     style={styles.input}
-                    value={formData?.battery_start_per}
-                    onChangeText={e => handleInputChange('battery_start_per', e)}
+                    value={formData?.batter_start_per}
+                    onChangeText={e => handleInputChange('batter_start_per', e)}
                 />
                 <TextInput
                     placeholder="Out Time"

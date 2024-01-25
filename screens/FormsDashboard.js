@@ -28,7 +28,7 @@ export default function FormsDashboard({ route, navigation }) {
 
     useEffect(() => {
         navigation.setOptions({
-            title: routeParams?.username,
+            title: 'Home',
             headerTitleAlign: 'center'
         });
     }, []);

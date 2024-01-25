@@ -8,9 +8,9 @@ import { post } from '../utils/ApiRequest';
 export default function DI({ route, navigation }) {
     const textAreaLines = 4;
     const [loading, setLoading] = useState(false)
-    const chassis_no = useSelector(state => state?.vehicleDetailReducer?.chassis_no);
-    const km_reading = useSelector(state => state?.vehicleDetailReducer?.km_reading);
-    const token = useSelector(state => state?.loginReducer?.token);
+    const chassis_no = useSelector(state => state?.VehicleDetailReducer?.chassis_no);
+    const km_reading = useSelector(state => state?.VehicleDetailReducer?.km_reading);
+    const token = useSelector(state => state?.LoginReducer?.token);
 
     const [formData, setFormData] = useState({
         brakeFluid: false,
@@ -75,13 +75,19 @@ export default function DI({ route, navigation }) {
             physical_inspection_remark: formData?.physicalInspectionRemark,
             all_fastners: formData?.allFastners,
             remark: formData?.remark,
-            vehicle_id: chassis_no
+            vehicle_id: chassis_no,
+            token: token
         }
 
-        await post(apisPath?.front?.di, token, form).then((res) => {
+        var form_data = new FormData();
+        for (var key in form) {
+            form_data.append(key, form[key]);
+        }
+
+        await post(apisPath?.front?.di, form_data).then((res) => {
             if (res?.success) {
                 setLoading(false);
-                navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams.username })
+                navigation.navigate('FormsDashboard')
             }
             else {
                 setLoading(false);

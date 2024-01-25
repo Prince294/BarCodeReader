@@ -8,9 +8,9 @@ import { useSelector } from 'react-redux';
 
 export default function BreakDown({ route, navigation }) {
     const textAreaLines = 4;
-    const chassis_no = useSelector(state => state?.vehicleDetailReducer?.chassis_no);
-    const km_reading = useSelector(state => state?.vehicleDetailReducer?.km_reading);
-    const token = useSelector(state => state?.loginReducer?.token);
+    const chassis_no = useSelector(state => state?.VehicleDetailReducer?.chassis_no);
+    const km_reading = useSelector(state => state?.VehicleDetailReducer?.km_reading);
+    const token = useSelector(state => state?.LoginReducer?.token);
     const [loading, setLoading] = useState(false)
     const [calanderOpen, setCalanderOpen] = useState(false)
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])

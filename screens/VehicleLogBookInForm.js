@@ -7,14 +7,14 @@ import { apisPath } from '../utils/path';
 
 export default function VehicleLogBookInForm({ route, navigation }) {
     const [loading, setLoading] = useState(false)
-    const chassis_no = useSelector(state => state?.vehicleDetailReducer?.chassis_no);
-    const km_reading = useSelector(state => state?.vehicleDetailReducer?.km_reading);
-    const token = useSelector(state => state?.loginReducer?.token);
+    const chassis_no = useSelector(state => state?.VehicleDetailReducer?.chassis_no);
+    const km_reading = useSelector(state => state?.VehicleDetailReducer?.km_reading);
+    const token = useSelector(state => state?.LoginReducer?.token);
     const [formData, setFormData] = useState({
         end_km: '',
         place_to: '',
         in_time: '',
-        battery_end_per: '',
+        batter_end_per: '',
         battery_no: '',
         vehicle_id: chassis_no,
         token: token,
@@ -30,10 +30,14 @@ export default function VehicleLogBookInForm({ route, navigation }) {
 
     const submitForm = async () => {
         setLoading(true)
-        await post(apisPath?.front?.vehicleLogIn, token, formData).then((res) => {
-            console.log(res)
+        var form_data = new FormData();
+        for (var key in formData) {
+            form_data.append(key, formData[key]);
+        }
+        await post(apisPath?.front?.vehicleLogIn, form_data).then((res) => {
+            // console.log(res)
             if (res?.success) {
-                // navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams.username })
+                navigation.navigate('FormsDashboard')
                 setLoading(false)
             }
             else {
@@ -41,6 +45,12 @@ export default function VehicleLogBookInForm({ route, navigation }) {
                 Alert.alert(`Error: ${res?.message}`)
             }
         })
+    }
+
+    const handleInputChange = (name, val) => {
+        setFormData((prev) => {
+            return { ...prev, [name]: val }
+        });
     }
 
     return (
@@ -54,6 +64,7 @@ export default function VehicleLogBookInForm({ route, navigation }) {
                     selectionColor={'#ec3237'}
                     underlineColorAndroid={'#000'}
                     style={styles.input}
+                    keyboardType="numeric"
                     value={formData?.end_km}
                     onChangeText={e => handleInputChange('end_km', e)}
                 />
@@ -92,8 +103,9 @@ export default function VehicleLogBookInForm({ route, navigation }) {
                     selectionColor={'#ec3237'}
                     underlineColorAndroid={'#000'}
                     style={styles.input}
-                    value={formData?.battery_end_per}
-                    onChangeText={e => handleInputChange('battery_end_per', e)}
+                    keyboardType="numeric"
+                    value={formData?.batter_end_per}
+                    onChangeText={e => handleInputChange('batter_end_per', e)}
                 />
                 <TextInput
                     placeholder="Battery Number"
