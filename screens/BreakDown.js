@@ -10,6 +10,7 @@ export default function BreakDown({ route, navigation }) {
     const textAreaLines = 4;
     const chassis_no = useSelector(state => state?.VehicleDetailReducer?.chassis_no);
     const km_reading = useSelector(state => state?.VehicleDetailReducer?.km_reading);
+    const vehicle_id = useSelector(state => state?.VehicleDetailReducer?.vehicle_id);
     const token = useSelector(state => state?.LoginReducer?.token);
     const [loading, setLoading] = useState(false)
     const [calanderOpen, setCalanderOpen] = useState(false)
@@ -40,6 +41,21 @@ export default function BreakDown({ route, navigation }) {
     return (
         <ScrollView className="h-full w-full flex pt-10 pb-10">
             <View className="mx-6 space-y-5 pb-12">
+
+                <View style={styles.formItem}>
+                    <Text style={styles.label}>Chassis Number</Text>
+                    <TextInput
+                        placeholder="Chassis Number"
+                        placeholderTextColor={'gray'}
+                        selectionColor={'#ec3237'}
+                        underlineColorAndroid={'#000'}
+                        style={styles.input}
+                        keyboardType="numeric"
+                        value={chassis_no}
+                        editable={false}
+                    />
+
+                </View>
 
                 <View style={styles.formItem}>
                     <Text style={styles.label}>Location</Text>

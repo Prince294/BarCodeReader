@@ -57,7 +57,7 @@ export default function BarCodeScreen({ route, navigation }) {
         await post(apisPath?.front?.barCodeScan, form_data).then((res) => {
             console.log(res)
             if (res?.success) {
-                dispatch(vehilceDetail({ km_reading: res?.data?.km_reading, chassis_no: data }));
+                dispatch(vehilceDetail({ km_reading: res?.data?.km_reading, chassis_no: data, vehicle_id: res?.data?.registration_no }));
                 navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams?.username })
                 setScanned(true);
             }

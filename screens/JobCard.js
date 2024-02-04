@@ -11,6 +11,7 @@ import Loader from './Loader';
 export default function JobCard({ route, navigation }) {
     const textAreaLines = 4;
     const chassis_no = useSelector(state => state?.VehicleDetailReducer?.chassis_no);
+    const vehicle_id = useSelector(state => state?.VehicleDetailReducer?.vehicle_id);
     const km_reading = useSelector(state => state?.VehicleDetailReducer?.km_reading);
     const token = useSelector(state => state?.LoginReducer?.token);
     const [loading, setLoading] = useState(false)
@@ -120,7 +121,7 @@ export default function JobCard({ route, navigation }) {
             fire_ext: table[6]?.value,
             in_time: table[7]?.value,
             out_time: table[8]?.value,
-            vehicle_id: chassis_no,
+            vehicle_id: vehicle_id,
             token: token,
         }
 

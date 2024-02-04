@@ -2,7 +2,8 @@ import { VEHICLE_DETAIL } from "../action/type";
 
 const initalState = {
     chassis_no: '',
-    km_reading: ''
+    km_reading: '',
+    vehicle_id: ''
 }
 
 const VehicleDetailReducer = (state = initalState, action) => {
@@ -11,7 +12,8 @@ const VehicleDetailReducer = (state = initalState, action) => {
             return {
                 ...state,
                 chassis_no: action?.payload?.chassis_no,
-                km_reading: action?.payload?.km_reading
+                km_reading: action?.payload?.km_reading,
+                vehicle_id: action?.payload?.vehicle_id,
             }
         default: return state
     }

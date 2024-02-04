@@ -9,6 +9,7 @@ export default function DI({ route, navigation }) {
     const textAreaLines = 4;
     const [loading, setLoading] = useState(false)
     const chassis_no = useSelector(state => state?.VehicleDetailReducer?.chassis_no);
+    const vehicle_id = useSelector(state => state?.VehicleDetailReducer?.vehicle_id);
     const km_reading = useSelector(state => state?.VehicleDetailReducer?.km_reading);
     const token = useSelector(state => state?.LoginReducer?.token);
 
@@ -75,7 +76,7 @@ export default function DI({ route, navigation }) {
             physical_inspection_remark: formData?.physicalInspectionRemark,
             all_fastners: formData?.allFastners,
             remark: formData?.remark,
-            vehicle_id: chassis_no,
+            vehicle_id: vehicle_id,
             token: token
         }
 
@@ -100,6 +101,17 @@ export default function DI({ route, navigation }) {
         <ScrollView className="h-full w-full flex pt-10 pb-10">
             {loading && <Loader />}
             <View className="mx-6 space-y-5 pb-12">
+
+                <TextInput
+                    placeholder="Chassis Number"
+                    placeholderTextColor={'gray'}
+                    selectionColor={'#ec3237'}
+                    underlineColorAndroid={'#000'}
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={chassis_no}
+                    editable={false}
+                />
 
                 <TextInput
                     placeholder="ODO Meter Reading"

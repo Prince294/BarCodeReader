@@ -4,9 +4,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { ImageBackground } from 'react-native';
+import { useSelector } from 'react-redux';
 
 export default function FormsDashboard({ route, navigation }) {
     const routeParams = route.params;
+    const vehicle_id = useSelector(state => state?.VehicleDetailReducer?.vehicle_id);
+
     const [cardsData, setCardsData] = useState([
         { 'name': 'Battery Swapping', id: 1, dropdown: false },
         {
@@ -27,6 +30,7 @@ export default function FormsDashboard({ route, navigation }) {
     ]);
 
     useEffect(() => {
+        console.log(vehicle_id)
         navigation.setOptions({
             title: 'Home',
             headerTitleAlign: 'center'

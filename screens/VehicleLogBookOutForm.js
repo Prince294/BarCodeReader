@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 export default function VehicleLogBookOutForm({ route, navigation }) {
     const [loading, setLoading] = useState(false)
     const chassis_no = useSelector(state => state?.VehicleDetailReducer?.chassis_no);
+    const vehicle_id = useSelector(state => state?.VehicleDetailReducer?.vehicle_id);
     const km_reading = useSelector(state => state?.VehicleDetailReducer?.km_reading);
     const token = useSelector(state => state?.LoginReducer?.token);
 
@@ -18,7 +19,7 @@ export default function VehicleLogBookOutForm({ route, navigation }) {
         driver_name: '',
         batter_start_per: '',
         battery_no: '',
-        vehicle_id: chassis_no,
+        vehicle_id: vehicle_id,
         token: token,
     })
 
@@ -58,6 +59,17 @@ export default function VehicleLogBookOutForm({ route, navigation }) {
         <ScrollView className="h-full w-full flex pt-10 pb-10">
             {loading && <Loader />}
             <View className="mx-6 space-y-5">
+
+                <TextInput
+                    placeholder="Chassis Number"
+                    placeholderTextColor={'gray'}
+                    selectionColor={'#ec3237'}
+                    underlineColorAndroid={'#000'}
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={chassis_no}
+                    editable={false}
+                />
 
                 <TextInput
                     placeholder="Start KM"
