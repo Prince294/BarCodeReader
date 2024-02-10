@@ -39,7 +39,7 @@ export default function LoginScreen({ navigation }) {
                     Alert.alert('Success', 'Successfully Logged In', [
                         {
                             text: 'OK', onPress: () => navigation.dispatch(
-                                StackActions.replace('Scanner', { username: 'Username' })
+                                StackActions.replace('Scanner')
                             )
                         },
                     ]);

@@ -1,6 +1,7 @@
 import {
   VEHICLE_DETAIL,
-  LOGIN
+  LOGIN,
+  LOGOUT
 } from './type';
 
 export const vehilceDetail = (data) => {
@@ -14,5 +15,11 @@ export const userLogin = (data) => {
   return {
     type: LOGIN,
     payload: data,
+  };
+};
+
+export const userLogout = () => {
+  return {
+    type: LOGOUT,
   };
 };

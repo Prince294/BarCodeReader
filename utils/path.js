@@ -7,5 +7,7 @@ export const apisPath = {
         vehicleLogIn: 'https://lkglobalsolutions.com/app/vehicle_log_in.php',
         vehicleLogOut: 'https://lkglobalsolutions.com/app/vehicle_log_out.php',
         dwr: 'https://lkglobalsolutions.com/app/dwr.php',
+        get_breakdown: 'https://lkglobalsolutions.com/app/breakdown_status.php',
+        breakdown: 'https://lkglobalsolutions.com/app/breakdown.php',
     }
 }

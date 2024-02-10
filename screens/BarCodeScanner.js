@@ -3,13 +3,15 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Button } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, AntDesign } from '@expo/vector-icons';
 import QRCode from '../assets/QRCode/qr_code.gif';
 import { useDispatch, useSelector } from 'react-redux';
 import { vehilceDetail } from '../redux/action';
 import { apisPath } from '../utils/path';
 import Loader from './Loader';
 import { post } from '../utils/ApiRequest';
+import { userLogout } from '../redux/action';
+import { StackActions } from '@react-navigation/native';
 
 export default function BarCodeScreen({ route, navigation }) {
     const dispatch = useDispatch();
@@ -29,13 +31,25 @@ export default function BarCodeScreen({ route, navigation }) {
         });
 
         navigation.setOptions({
-            title: routeParams?.username,
-            headerTitleAlign: 'center'
+            title: 'Scan QR',
+            headerTitleAlign: 'center',
+            headerRight: () => (
+                <TouchableOpacity style={styles.logoutBorder} onPress={logout}>
+                    <AntDesign name="logout" size={16} color="red" style={styles.camera} />
+                </TouchableOpacity>
+            ),
         });
         askForCameraPermission();
 
         return () => navigationSubscription();
     }, []);
+
+    const logout = () => {
+        dispatch(userLogout());
+        navigation.dispatch(
+            StackActions.replace('Login')
+        )
+    }
 
     const askForCameraPermission = () => {
         (async () => {
@@ -49,7 +63,7 @@ export default function BarCodeScreen({ route, navigation }) {
         setLoading(true);
         setScanned(true);
         setCameraClicked(false);
-        console.log(data)
+        // console.log(data)
 
         const form_data = new FormData();
         form_data.append('chassis_no', data);
@@ -57,6 +71,7 @@ export default function BarCodeScreen({ route, navigation }) {
         await post(apisPath?.front?.barCodeScan, form_data).then((res) => {
             console.log(res)
             if (res?.success) {
+                setLoading(false);
                 dispatch(vehilceDetail({ km_reading: res?.data?.km_reading, chassis_no: data, vehicle_id: res?.data?.registration_no }));
                 navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams?.username })
                 setScanned(true);
@@ -156,5 +171,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         paddingVertical: 24,
         borderRadius: 100
+    },
+    logoutBorder: {
+        borderWidth: 1.5,
+        padding: 8,
+        borderRadius: 100,
+        borderColor: 'red'
     }
 });

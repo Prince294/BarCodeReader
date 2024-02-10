@@ -13,7 +13,10 @@ export const post = (url, body) => {
 
             if (response !== null) {
                 let res = await response?.json();
-                if (res?.success && url !== Url?.apisPath?.front?.barCodeScan) {
+                if (res?.success && url !== Url?.apisPath?.front?.barCodeScan && url !== Url?.apisPath?.front?.get_breakdown) {
+                    Alert.alert(res?.message)
+                }
+                else if (!res?.success) {
                     Alert.alert(res?.message)
                 }
                 resolve(res);
@@ -25,5 +28,3 @@ export const post = (url, body) => {
     })
 
 };
-
-
