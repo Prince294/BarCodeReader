@@ -81,7 +81,7 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.reflex1408.barcodereader'
+    namespace 'com.reflex1408.vehicleregister'
     defaultConfig {
         applicationId 'com.reflex1408.vehicleregister'
         minSdkVersion rootProject.ext.minSdkVersion
