@@ -83,7 +83,7 @@ android {
 
     namespace 'com.reflex1408.barcodereader'
     defaultConfig {
-        applicationId 'com.reflex1408.barcodereader'
+        applicationId 'com.reflex1408.vehicleregister'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

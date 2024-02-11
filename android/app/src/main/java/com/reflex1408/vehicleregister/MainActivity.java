@@ -1,4 +1,4 @@
-package com.reflex1408.barcodereader;
+package com.reflex1408.vehicleregister;
 
 import android.os.Build;
 import android.os.Bundle;
