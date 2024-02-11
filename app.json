@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Bar Code Reader",
+    "name": "Vehicle Register",
     "slug": "barcodereader",
     "orientation": "portrait",
     "android": {
