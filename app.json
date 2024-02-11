@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Bar Code Reader",
-    "slug": "barcodereader",
+    "name": "Vehicle Register",
+    "slug": "vehicleregister",
     "orientation": "portrait",
     "android": {
       "package": "com.reflex1408.barcodereader",

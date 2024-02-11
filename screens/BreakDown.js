@@ -275,11 +275,12 @@ export default function BreakDown({ route, navigation }) {
                         <DatePicker
                             current={currentDate}
                             selected={selectedDate}
-                            onDateChange={(date) => {
+                            onSelectedChange={(date) => {
                                 setCalanderOpen(false);
                                 setSelectedDate(date);
                             }}
-                            mode="calendar"
+                            // mode="calendar"
+                            minuteInterval={1}
                             style={{ borderRadius: 10 }}
                         />
                     </View>
