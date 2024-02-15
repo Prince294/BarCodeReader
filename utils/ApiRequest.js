@@ -5,7 +5,7 @@ import * as Url from './path';
 export const post = (url, body) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(body)
+            // console.log(body)
             const response = await fetch(url, {
                 method: 'POST',
                 body: body,

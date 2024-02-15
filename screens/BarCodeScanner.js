@@ -72,7 +72,7 @@ export default function BarCodeScreen({ route, navigation }) {
             console.log(res)
             if (res?.success) {
                 setLoading(false);
-                dispatch(vehilceDetail({ km_reading: res?.data?.km_reading, chassis_no: data, vehicle_id: res?.data?.registration_no }));
+                dispatch(vehilceDetail({ km_reading: res?.data?.km_reading, chassis_no: data, vehicle_id: res?.data?.id }));
                 navigation.navigate('FormsDashboard', { data: data, type: type, username: routeParams?.username })
                 setScanned(true);
             }

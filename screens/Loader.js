@@ -4,7 +4,6 @@ import React from 'react'
 export default function Loader() {
     return (
         <View style={styles.parentBox}>
-
             <View style={styles.box}>
                 <ActivityIndicator size="large" color="#fff" />
             </View>

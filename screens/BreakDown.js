@@ -6,6 +6,7 @@ import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { useSelector } from 'react-redux';
 import { post } from '../utils/ApiRequest';
 import { apisPath } from '../utils/path';
+import Loader from './Loader';
 
 
 export default function BreakDown({ route, navigation }) {
@@ -37,6 +38,7 @@ export default function BreakDown({ route, navigation }) {
         type: '',
         token: token,
         vehicle_id: vehicle_id,
+        breakdown_ok_date: selectedDate,
     })
     const [editFormData, setEditFormData] = useState({
         breakdown_ok_date: selectedDate,
@@ -56,6 +58,7 @@ export default function BreakDown({ route, navigation }) {
     }, []);
 
     const getData = async () => {
+        setLoading(true);
         var form_data = new FormData();
         form_data.append('vehicle_id', vehicle_id);
 
@@ -83,13 +86,17 @@ export default function BreakDown({ route, navigation }) {
 
         var form_data = new FormData();
         if (breakDownStatus) {
-            for (var key in editFormData) {
-                form_data.append(key, editFormData[key]);
+            let data = { ...editFormData };
+            data['breakdown_ok_date'] = selectedDate;
+            for (var key in data) {
+                form_data.append(key, data[key]);
             }
         }
         else {
-            for (var key in formData) {
-                form_data.append(key, formData[key]);
+            let data = { ...formData }
+            data['breakdown_ok_date'] = selectedDate;
+            for (var key in data) {
+                form_data.append(key, data[key]);
             }
         }
 
@@ -121,6 +128,7 @@ export default function BreakDown({ route, navigation }) {
 
     return (
         <ScrollView className="h-full w-full flex pt-10 pb-10">
+            {loading && <Loader />}
             {breakDownStatus ?
                 <View className="mx-6 space-y-5 pb-12">
 
@@ -235,7 +243,7 @@ export default function BreakDown({ route, navigation }) {
                                 })
                                 setFormData(prev => {
                                     let data = { ...prev };
-                                    data['value'] = elem?.label;
+                                    data['type'] = elem?.label;
                                     return data;
                                 })
                             }}
@@ -258,6 +266,22 @@ export default function BreakDown({ route, navigation }) {
                             value={formData?.description}
                             onChangeText={e => handleInputChange('description', e)}
                         />
+                    </View>
+
+                    <View style={styles.formItem}>
+                        <Text style={styles.label}>Breakdown OK date</Text>
+                        <View style={styles.calanderView}>
+                            <TextInput
+                                selectionColor={'#ec3237'}
+                                underlineColorAndroid={'#000'}
+                                style={[styles.input, { color: 'black' }]}
+                                value={selectedDate}
+                                editable={false}
+                            />
+                            <TouchableOpacity style={styles.calanderIcon} onPress={() => setCalanderOpen(true)}>
+                                <MaterialIcons name="date-range" size={30} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
                     <TouchableOpacity className="w-full bg-[#ec3237] p-2 rounded-xl mt-8 mb-8" onPress={submitData}>
