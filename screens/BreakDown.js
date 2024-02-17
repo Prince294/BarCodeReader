@@ -19,9 +19,12 @@ export default function BreakDown({ route, navigation }) {
 
     const token = useSelector(state => state?.LoginReducer?.token);
     const [loading, setLoading] = useState(false)
-    const [calanderOpen, setCalanderOpen] = useState(false)
+    const [calanderOpen, setCalanderOpen] = useState(false);
+    const [editCalanderOpen, setEditCalanderOpen] = useState(false);
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
+    const [editCurrentDate, setEditCurrentDate] = useState(new Date().toISOString().split('T')[0])
     const [selectedDate, setSelectedDate] = useState()
+    const [editSelectedDate, setEditSelectedDate] = useState()
 
     const [dropdownData, setDropdownData] = useState([
         { label: 'Testing', value: '0' },
@@ -38,7 +41,7 @@ export default function BreakDown({ route, navigation }) {
         type: '',
         token: token,
         vehicle_id: vehicle_id,
-        breakdown_ok_date: selectedDate,
+        breakdown_date: editSelectedDate,
     })
     const [editFormData, setEditFormData] = useState({
         breakdown_ok_date: selectedDate,
@@ -63,7 +66,7 @@ export default function BreakDown({ route, navigation }) {
         form_data.append('vehicle_id', vehicle_id);
 
         await post(apisPath?.front?.get_breakdown, form_data).then((res) => {
-            // console.log(res)
+            console.log(res)
             if (res?.success) {
                 setLoading(false)
                 if (res?.status === 0) {
@@ -94,7 +97,7 @@ export default function BreakDown({ route, navigation }) {
         }
         else {
             let data = { ...formData }
-            data['breakdown_ok_date'] = selectedDate;
+            data['breakdown_date'] = editSelectedDate;
             for (var key in data) {
                 form_data.append(key, data[key]);
             }
@@ -269,16 +272,16 @@ export default function BreakDown({ route, navigation }) {
                     </View>
 
                     <View style={styles.formItem}>
-                        <Text style={styles.label}>Breakdown OK date</Text>
+                        <Text style={styles.label}>Breakdown date</Text>
                         <View style={styles.calanderView}>
                             <TextInput
                                 selectionColor={'#ec3237'}
                                 underlineColorAndroid={'#000'}
                                 style={[styles.input, { color: 'black' }]}
-                                value={selectedDate}
+                                value={editSelectedDate}
                                 editable={false}
                             />
-                            <TouchableOpacity style={styles.calanderIcon} onPress={() => setCalanderOpen(true)}>
+                            <TouchableOpacity style={styles.calanderIcon} onPress={() => setEditCalanderOpen(true)}>
                                 <MaterialIcons name="date-range" size={30} />
                             </TouchableOpacity>
                         </View>
@@ -298,19 +301,35 @@ export default function BreakDown({ route, navigation }) {
                         }} style={{ marginLeft: 'auto', marginBottom: 10 }} />
                         <DatePicker
                             current={currentDate}
-                            selected={selectedDate}
                             onSelectedChange={(date) => {
                                 setCalanderOpen(false);
                                 setSelectedDate(date);
                             }}
-                            // mode="calendar"
                             minuteInterval={1}
                             style={{ borderRadius: 10 }}
                         />
                     </View>
-
                 </View>
+            </Modal>
 
+            {/* edit modal */}
+            <Modal transparent={true} visible={editCalanderOpen}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <AntDesign name="closecircle" size={24} color="black" onPress={() => {
+                            setEditCalanderOpen(false)
+                        }} style={{ marginLeft: 'auto', marginBottom: 10 }} />
+                        <DatePicker
+                            current={editCurrentDate}
+                            onSelectedChange={(date) => {
+                                setEditCalanderOpen(false);
+                                setEditSelectedDate(date);
+                            }}
+                            minuteInterval={1}
+                            style={{ borderRadius: 10 }}
+                        />
+                    </View>
+                </View>
             </Modal>
         </ScrollView>
     )
